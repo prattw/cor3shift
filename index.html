@@ -11,53 +11,225 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: rgb(16, 34, 59);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+            z-index: 1;
+        }
+
+        /* Content Section */
+        .content-section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 80px 20px;
+            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .logo-container {
-            margin-bottom: 40px;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s;
+        }
+
+        .content-section.visible .logo-container {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .logo-container img {
-            max-width: 100%;
+            max-width: 400px;
+            width: 100%;
             height: auto;
+            filter: drop-shadow(0 10px 30px rgba(255, 255, 255, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.05);
         }
 
         .contact-info {
             text-align: center;
-            color: white;
-            font-size: 18px;
+            color: #fff;
+            font-size: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s;
+        }
+
+        .content-section.visible .contact-info {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .contact-info div {
-            margin: 10px 0;
+            margin: 20px 0;
         }
 
         .contact-info a {
-            color: white;
+            color: #fff;
             text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .contact-info a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background: #fff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .contact-info a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-info a:hover::after {
+            width: 80%;
+        }
+
+        /* Smooth fade in on scroll */
+        @media (prefers-reduced-motion: no-preference) {
+            .content-section {
+                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 100vh;
+            }
+
+            .logo-container img {
+                max-width: 280px;
+            }
+
+            .contact-info {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-container img {
+                max-width: 220px;
+            }
+
+            .contact-info {
+                font-size: 16px;
+            }
+
+            .content-section {
+                padding: 60px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="logo-container">
-        <img src="https://i.imgur.com/aZwn83n_d.png?maxwidth=520&shape=thumb&fidelity=high" alt="Cor3Shift Logo">
-    </div>
-    <div class="contact-info">
-        <div>
-            <a href="mailto:cor3shift@gmail.com">cor3shift@gmail.com</a>
+    <!-- Hero Section with Image -->
+    <section class="hero-section">
+        <img src="images/hero-image.png" alt="Renew your focus, Redesign your path, Reclaim your power" class="hero-image">
+        <div class="hero-overlay"></div>
+    </section>
+
+    <!-- Content Section with Logo and Contact -->
+    <section class="content-section" id="content">
+        <div class="logo-container">
+            <img src="https://i.imgur.com/aZwn83n_d.png?maxwidth=520&shape=thumb&fidelity=high" alt="Cor3Shift Logo">
         </div>
-        <div>
-            <a href="tel:415-598-8460">415-598-8460</a>
+        <div class="contact-info">
+            <div>
+                <a href="mailto:cor3shift@gmail.com">cor3shift@gmail.com</a>
+            </div>
+            <div>
+                <a href="tel:415-598-8460">415-598-8460</a>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe the content section
+        const contentSection = document.getElementById('content');
+        observer.observe(contentSection);
+
+        // Parallax effect on hero image (subtle)
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroImage = document.querySelector('.hero-image');
+            if (heroImage && scrolled < window.innerHeight) {
+                heroImage.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
 </body>
 </html>
