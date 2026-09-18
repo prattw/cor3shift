@@ -53,6 +53,83 @@
             z-index: 1;
         }
 
+        /* Shared scroll-section reveal */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Dana's message */
+        .dana-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 100px 10vw;
+            background: #163027;
+        }
+
+        .dana-copy {
+            max-width: 42rem;
+            color: #f3ead6;
+            font-family: Georgia, 'Palatino Linotype', Palatino, 'Times New Roman', Times, serif;
+            font-style: italic;
+            text-align: left;
+        }
+
+        .dana-copy h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            line-height: 1.25;
+            margin-bottom: 1.75rem;
+            letter-spacing: 0.01em;
+        }
+
+        .dana-copy p {
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            line-height: 1.75;
+            margin-bottom: 1.35rem;
+        }
+
+        .dana-copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Testimonial */
+        .testimonial-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 24px;
+            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+            text-align: center;
+        }
+
+        .testimonial-section blockquote {
+            max-width: 40rem;
+            color: #fff;
+            font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .testimonial-section cite {
+            display: block;
+            margin-top: 1.75rem;
+            font-style: normal;
+            font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+            color: rgba(255, 255, 255, 0.78);
+            letter-spacing: 0.02em;
+        }
+
         /* Content Section */
         .content-section {
             min-height: 100vh;
@@ -62,14 +139,6 @@
             align-items: center;
             padding: 80px 20px;
             background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        .content-section.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .logo-container {
@@ -144,10 +213,13 @@
             width: 80%;
         }
 
-        /* Smooth fade in on scroll */
-        @media (prefers-reduced-motion: no-preference) {
-            .content-section {
-                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-on-scroll,
+            .logo-container,
+            .contact-info {
+                opacity: 1;
+                transform: none;
+                transition: none;
             }
         }
 
@@ -155,6 +227,15 @@
         @media (max-width: 768px) {
             .hero-section {
                 height: 100vh;
+            }
+
+            .dana-section {
+                align-items: flex-start;
+                padding: 80px 8vw;
+            }
+
+            .testimonial-section {
+                padding: 72px 20px;
             }
 
             .logo-container img {
@@ -175,8 +256,13 @@
                 font-size: 16px;
             }
 
-            .content-section {
+            .content-section,
+            .testimonial-section {
                 padding: 60px 20px;
+            }
+
+            .dana-section {
+                padding: 64px 22px;
             }
         }
     </style>
@@ -188,8 +274,29 @@
         <div class="hero-overlay"></div>
     </section>
 
+    <!-- Dana's message -->
+    <section class="dana-section reveal-on-scroll" id="dana" aria-labelledby="dana-heading">
+        <div class="dana-copy">
+            <h2 id="dana-heading">Hi, I'm Dana</h2>
+            <p>I grew up with a natural curiosity towards science, leading to a dynamic career in the biotechnology and pharmaceutical industry across clinical development, regulatory, and marketing. Over time, my true calling emerged: empowering high-performing individuals and leaders to unlock peak potential, drive sustainable results, and own their trajectory.</p>
+            <p>Whether you are aiming for executive excellence, professional breakthroughs, or holistic personal growth, I partner with you to maximize your impact, elevate your goals, and reclaim your power.</p>
+            <p>When you work with me, you will get someone that is present and shows up with an empathetic ear. My coaching approach is based on Core Energy Coaching™.</p>
+            <p>We will partner together to tap into your inner purpose and passion.</p>
+            <p>We will foster a safe, non-judgemental, and respectful space.</p>
+            <p>I am not a medical professional, licensed therapist or legal advisor. Should you need support in these areas, I am happy to refer you.</p>
+        </div>
+    </section>
+
+    <!-- Client testimonial -->
+    <section class="testimonial-section reveal-on-scroll" id="testimonial" aria-label="Client testimonial">
+        <blockquote>
+            <p>“Having the space to process my thoughts out loud, with a coach who is empowering and empathetic, really helped me to see myself in a different light. I was not prepared for the shift that occurred over the course of our sessions, and I am so happy I had Dana as a partner in my transformation.”</p>
+            <cite>Da’Shira C., HR Leader, Phoenix, AZ</cite>
+        </blockquote>
+    </section>
+
     <!-- Content Section with Logo and Contact -->
-    <section class="content-section" id="content">
+    <section class="content-section reveal-on-scroll" id="content">
         <div class="logo-container">
             <img src="https://i.imgur.com/aZwn83n_d.png?maxwidth=520&shape=thumb&fidelity=high" alt="Cor3Shift Logo">
         </div>
@@ -209,8 +316,8 @@
     <script>
         // Intersection Observer for scroll animations
         const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: 0.08,
+            rootMargin: '0px 0px -40px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -221,9 +328,9 @@
             });
         }, observerOptions);
 
-        // Observe the content section
-        const contentSection = document.getElementById('content');
-        observer.observe(contentSection);
+        document.querySelectorAll('.reveal-on-scroll').forEach((section) => {
+            observer.observe(section);
+        });
 
         // Parallax effect on hero image (subtle)
         window.addEventListener('scroll', () => {
