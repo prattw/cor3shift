@@ -65,14 +65,23 @@
             transform: translateY(0);
         }
 
-        /* Dana's message */
+        /* Dana's message — solid forest green in the reading area,
+           with soft fades at the black boundaries only */
         .dana-section {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: flex-start;
             padding: 100px 10vw;
-            background: #163027;
+            background: linear-gradient(
+                to bottom,
+                #000000 0,
+                #0c1c16 12vh,
+                #163027 32vh,
+                #163027 calc(100% - 32vh),
+                #0c1c16 calc(100% - 12vh),
+                #0a0a0a 100%
+            );
         }
 
         .dana-copy {
